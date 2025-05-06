@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>NequiBotGV - Generador</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -83,51 +83,30 @@
       width: 100%;
       display: block;
     }
-    .input-overlay {
+
+    .input-overlay, #fecha, #referencia, #disponible {
       position: absolute;
       background: transparent;
       border: none;
       font-size: 14px;
-      color: #333;
-      font-weight: 400;
-      text-align: right;
       font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      color: #2E1A47;
+      text-align: right;
       outline: none;
     }
+
     #nombre    { top: 346.22px; left: 172.22px; width: 160px; }
     #valor     { top: 378.26px; left: 172.22px; width: 160px; }
     #nequi     { top: 411.48px; left: 172.22px; width: 160px; }
-    #fecha {
-      position: absolute;
-      top: 456.02px;
-      left: 172.22px;
-      width: 160px;
-      font-size: 14px;
-      line-height: 1.3;
-      color: #333;
-      text-align: right;
-    }
-    #referencia {
-      position: absolute;
-      top: 502.26px;
-      left: 172.22px;
-      width: 160px;
-      font-size: 14px;
-      text-align: right;
-    }
-    #disponible {
-      position: absolute;
-      top: 540.16px;
-      left: 172.22px;
-      width: 160px;
-      font-size: 14px;
-      color: #333;
-      text-align: right;
-    }
+    #fecha     { top: 456.02px; left: 172.22px; width: 160px; line-height: 1.3; }
+    #referencia{ top: 502.26px; left: 172.22px; width: 160px; }
+    #disponible{ top: 540.16px; left: 172.22px; width: 160px; }
   </style>
 </head>
 <body>
 
+<!-- FORMULARIO -->
 <div class="formulario" id="pantalla">
   <div class="titulo">NequiBotGV</div>
   <button id="whatsapp" class="boton boton-whatsapp">¿No tienes clave? Contáctanos</button>
@@ -153,11 +132,12 @@
   </div>
 </div>
 
+<!-- CAPTURA -->
 <div class="container" id="captura">
   <img src="comprobante_base.png" alt="Fondo">
-  <input type="text" id="nombre"    class="input-overlay" readonly>
-  <input type="text" id="valor"     class="input-overlay" readonly>
-  <input type="text" id="nequi"     class="input-overlay" readonly>
+  <input type="text" id="nombre" class="input-overlay" readonly>
+  <input type="text" id="valor" class="input-overlay" readonly>
+  <input type="text" id="nequi" class="input-overlay" readonly>
   <div id="fecha"></div>
   <input type="text" id="referencia" class="input-overlay" readonly>
   <div id="disponible">Disponible</div>
