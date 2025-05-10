@@ -17,15 +17,17 @@
       min-height: 100vh;
       flex-direction: column;
     }
+
     .formulario {
       background: #111;
       padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 128, 255, 0.4);
+      border-radius: 0;
+      box-shadow: none;
       width: 90%;
       max-width: 400px;
       text-align: center;
     }
+
     .titulo {
       font-size: 32px;
       font-weight: 700;
@@ -36,24 +38,26 @@
       margin-bottom: 20px;
       text-shadow: 0px 0px 15px rgba(0, 191, 255, 0.8);
     }
+
     .input-campo {
       width: 90%;
       padding: 14px;
       margin: 12px 0;
       border: 1px solid #444;
-      border-radius: 12px;
+      border-radius: 0;
       font-size: 16px;
       background: #222;
       color: #fff;
       font-family: 'Inter', sans-serif;
     }
+
     .boton {
       margin-top: 10px;
       padding: 14px;
       width: 90%;
       font-size: 16px;
       border: none;
-      border-radius: 12px;
+      border-radius: 0;
       font-family: 'Inter', sans-serif;
       font-weight: 700;
       cursor: pointer;
@@ -62,6 +66,7 @@
       transition: all 0.4s ease;
       color: #fff;
     }
+
     .boton:hover { opacity: 0.9; }
     .boton-whatsapp { background: linear-gradient(90deg, #00c853, #00e676); }
     .boton-clave { background: linear-gradient(90deg, #cc0000, #ff1744); }
@@ -74,11 +79,12 @@
       max-width: 390px;
       margin: 20px auto;
       background: #fff;
-      border-radius: 20px;
+      border-radius: 0;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: none;
       display: none;
     }
+
     .container img {
       width: 100%;
       display: block;
@@ -266,7 +272,6 @@ document.getElementById('exit-fullscreen-btn').addEventListener('click', () => {
   }
 });
 
-// Mostrar u ocultar botón de salida según el estado
 document.addEventListener("fullscreenchange", () => {
   const isFull = document.fullscreenElement != null;
   document.getElementById('exit-fullscreen-btn').style.display = isFull ? 'block' : 'none';
