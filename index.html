@@ -143,6 +143,10 @@
   <div id="disponible">Disponible</div>
 </div>
 
+<!-- BOTONES DE PANTALLA COMPLETA -->
+<button id="fullscreen-btn" class="boton boton-descargar" style="display:none;">Ver en pantalla completa</button>
+<button id="exit-fullscreen-btn" class="boton boton-cambiar" style="display:none;">Salir de pantalla completa</button>
+
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
 let claveAcceso = "142025";
@@ -205,6 +209,7 @@ document.getElementById('generar').addEventListener('click', () => {
 
   setTimeout(() => {
     descargarComprobante(formato);
+    document.getElementById('fullscreen-btn').style.display = 'block';
   }, 500);
 });
 
@@ -238,6 +243,34 @@ function descargarComprobante(formato) {
     link.click();
   });
 }
+
+// Pantalla completa
+document.getElementById('fullscreen-btn').addEventListener('click', () => {
+  const elem = document.getElementById('captura');
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+});
+
+document.getElementById('exit-fullscreen-btn').addEventListener('click', () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+});
+
+// Mostrar u ocultar botón de salida según el estado
+document.addEventListener("fullscreenchange", () => {
+  const isFull = document.fullscreenElement != null;
+  document.getElementById('exit-fullscreen-btn').style.display = isFull ? 'block' : 'none';
+});
 </script>
 
 </body>
