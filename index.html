@@ -23,8 +23,8 @@
     .formulario {
       background: #111;
       padding: 40px 30px;
-      border-radius: 0;
-      box-shadow: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 128, 255, 0.4);
       width: 90%;
       max-width: 400px;
       text-align: center;
@@ -44,7 +44,7 @@
       padding: 14px;
       margin: 12px 0;
       border: 1px solid #444;
-      border-radius: 0;
+      border-radius: 12px;
       font-size: 16px;
       background: #222;
       color: #fff;
@@ -56,12 +56,10 @@
       width: 90%;
       font-size: 16px;
       border: none;
-      border-radius: 0;
+      border-radius: 12px;
       font-family: 'Inter', sans-serif;
       font-weight: 700;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
       transition: all 0.4s ease;
       color: #fff;
     }
@@ -76,9 +74,8 @@
       max-width: 390px;
       margin: 20px auto;
       background: #fff;
-      border-radius: 0;
+      border-radius: 0px;
       overflow: hidden;
-      box-shadow: none;
       display: none;
       transform-origin: top left;
       transform: scale(1);
@@ -87,16 +84,20 @@
       width: 100%;
       display: block;
     }
-    .input-overlay, #fecha, #referencia, #disponible {
+    .input-overlay {
       position: absolute;
       background: transparent;
       border: none;
       font-size: 16px;
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
       color: #2E1A47;
+      font-weight: 400;
       text-align: right;
+      font-family: 'Inter', sans-serif;
       outline: none;
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     /* Posiciones fijas sobre imagen de 390px de ancho */
     #nombre { top: 376.22px; left: 202.22px; width: 160px; }
@@ -105,8 +106,9 @@
     #fecha { top: 490.02px; left: 202.22px; width: 160px; line-height: 1.3; }
     #referencia { top: 540.26px; left: 202.22px; width: 160px; }
     #disponible { top: 578.16px; left: 202.22px; width: 160px; }
-    /* Botones de pantalla completa */
-    #fullscreen-btn, #exit-fullscreen-btn {
+    /* Botón de pantalla completa */
+    #verPantallaCompleta {
+      display: none;
       position: fixed;
       bottom: 20px;
       left: 50%;
@@ -116,67 +118,54 @@
       background: #1e88e5;
       color: #fff;
       border: none;
+      border-radius: 0px;
       font-family: 'Inter', sans-serif;
       font-weight: bold;
       z-index: 9999;
-      display: none;
     }
   </style>
 </head>
 <body>
-
-<!-- FORMULARIO -->
 <div class="formulario" id="pantalla">
   <div class="titulo">NequiBotGV</div>
   <button id="whatsapp" class="boton boton-whatsapp">¿No tienes clave? Contáctanos</button>
   <button id="clave-ingreso" class="boton boton-clave">Ingresar Clave</button>
   <button id="cambiar-clave-boton" class="boton boton-cambiar">Cambiar Clave</button>
-
   <div id="contenido-oculto" style="display: none;">
     <input type="text" id="input-nombre" class="input-campo" placeholder="Nombre del destinatario">
     <input type="text" id="input-valor" class="input-campo" placeholder="Valor en $">
     <input type="text" id="input-nequi" class="input-campo" placeholder="Número Nequi">
-
     <select id="formato" class="input-campo">
       <option value="png">Formato: PNG</option>
       <option value="jpg">Formato: JPG</option>
     </select>
-
     <button id="generar" class="boton boton-descargar">Generar Comprobante</button>
-
     <div id="admin-panel" style="display: none;">
       <input type="text" id="nueva-clave" class="input-campo" placeholder="Nueva clave de acceso">
       <button id="guardar-nueva-clave" class="boton">Guardar Nueva Clave</button>
     </div>
   </div>
 </div>
-
-<!-- CAPTURA -->
 <div class="container" id="captura">
-  <img src="comprobante_base.png" alt="Fondo">
+  <img src="comprobante_base.png" alt="Fondo" id="imagen-fondo">
   <input type="text" id="nombre" class="input-overlay" readonly>
   <input type="text" id="valor" class="input-overlay" readonly>
   <input type="text" id="nequi" class="input-overlay" readonly>
-  <div id="fecha"></div>
+  <div id="fecha" class="input-overlay"></div>
   <input type="text" id="referencia" class="input-overlay" readonly>
-  <div id="disponible">Disponible</div>
+  <div id="disponible" class="input-overlay">Disponible</div>
 </div>
-
-<!-- BOTONES DE PANTALLA COMPLETA -->
-<button id="fullscreen-btn">Ver en pantalla completa</button>
-<button id="exit-fullscreen-btn">Salir de pantalla completa</button>
-
+<button id="verPantallaCompleta">Ver en Pantalla Completa</button>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js "></script>
 <script>
 let claveAcceso = "142025";
 const claveAdmin = "1395";
 
-// WhatsApp
+// Eventos principales
 document.getElementById('whatsapp').addEventListener('click', () => {
   window.open('https://wa.me/573178793834?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20la%20clave%20de%20NequiBotGV. ', '_blank');
 });
 
-// Ingreso de clave
 document.getElementById('clave-ingreso').addEventListener('click', () => {
   const clave = prompt("Ingrese la clave de acceso:");
   if (clave === claveAdmin) {
@@ -189,7 +178,6 @@ document.getElementById('clave-ingreso').addEventListener('click', () => {
   }
 });
 
-// Cambiar clave
 document.getElementById('cambiar-clave-boton').addEventListener('click', () => {
   const clave = prompt("Ingrese la clave de administrador:");
   if (clave === claveAdmin) {
@@ -207,7 +195,6 @@ function mostrarFormulario() {
   document.getElementById('cambiar-clave-boton').style.display = 'none';
 }
 
-// Guardar nueva clave
 document.getElementById('guardar-nueva-clave').addEventListener('click', () => {
   const nueva = document.getElementById('nueva-clave').value.trim();
   if (nueva) {
@@ -217,13 +204,20 @@ document.getElementById('guardar-nueva-clave').addEventListener('click', () => {
   }
 });
 
-// Generar comprobante
 document.getElementById('generar').addEventListener('click', () => {
   if (!validarEntradas()) return;
 
-  document.getElementById('pantalla').style.display = 'none';
-  document.getElementById('captura').style.display = 'block';
+  const container = document.getElementById('captura');
+  const img = document.querySelector('#captura img');
 
+  // Ajustar escala según el tamaño de la pantalla
+  const escala = Math.min(window.innerWidth / 390, 1);
+  container.style.setProperty('--escala', escala);
+
+  document.getElementById('pantalla').style.display = 'none';
+  container.style.display = 'block';
+
+  // Asignar valores a los campos superpuestos
   document.getElementById('nombre').value = document.getElementById('input-nombre').value;
   document.getElementById('valor').value = formatValor(document.getElementById('input-valor').value);
   document.getElementById('nequi').value = document.getElementById('input-nequi').value;
@@ -233,11 +227,79 @@ document.getElementById('generar').addEventListener('click', () => {
 
   const formato = document.getElementById('formato').value;
 
-  setTimeout(() => {
-    descargarComprobante(formato);
-    document.getElementById('fullscreen-btn').style.display = 'block';
-  }, 500);
+  // Verificar si la imagen de fondo está completamente cargada
+  if (!img.complete || !img.naturalWidth) {
+    alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
+    return;
+  }
+
+  // Mostrar el botón de pantalla completa
+  document.getElementById('verPantallaCompleta').style.display = 'block';
+
+  // Descargar automáticamente el comprobante
+  descargarComprobante(formato);
 });
+
+document.getElementById('verPantallaCompleta').addEventListener('click', () => {
+  const contenedor = document.getElementById('captura');
+  const btn = document.getElementById('verPantallaCompleta');
+
+  if (!document.fullscreenElement) {
+    if (contenedor.requestFullscreen) {
+      contenedor.requestFullscreen();
+    } else if (contenedor.webkitRequestFullscreen) {
+      contenedor.webkitRequestFullscreen();
+    } else if (contenedor.msRequestFullscreen) {
+      contenedor.msRequestFullscreen();
+    }
+
+    const escala = Math.min(window.innerWidth / 390, 1);
+    contenedor.style.transform = `scale(${1 / escala})`;
+    btn.textContent = "Salir de Pantalla Completa";
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+
+    contenedor.style.transform = 'scale(1)';
+    btn.textContent = "Ver en Pantalla Completa";
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  const contenedor = document.getElementById('captura');
+  const btn = document.getElementById('verPantallaCompleta');
+
+  if (!document.fullscreenElement) {
+    contenedor.style.transform = 'scale(1)';
+    btn.textContent = "Ver en Pantalla Completa";
+  }
+});
+
+// Validaciones y utilidades
+function validarEntradas() {
+  const nombre = document.getElementById('input-nombre').value.trim();
+  const valor = document.getElementById('input-valor').value.trim();
+  const nequi = document.getElementById('input-nequi').value.trim();
+
+  if (!nombre || !valor || !nequi) {
+    alert("Todos los campos son obligatorios.");
+    return false;
+  }
+  if (isNaN(valor.replace(/\D/g, ''))) {
+    alert("El valor debe ser un número válido.");
+    return false;
+  }
+  if (nequi.length < 10) {
+    alert("El número Nequi debe tener al menos 10 dígitos.");
+    return false;
+  }
+  return true;
+}
 
 function generarFecha() {
   const fecha = new Date();
@@ -260,78 +322,37 @@ function formatValor(valor) {
 }
 
 function descargarComprobante(formato) {
-  html2canvas(document.getElementById('captura')).then(canvas => {
-    const link = document.createElement('a');
-    link.href = formato === 'jpg'
-      ? canvas.toDataURL('image/jpeg', 1.0)
-      : canvas.toDataURL('image/png');
-    link.download = `comprobante.${formato}`;
-    link.click();
+  const img = document.querySelector('#captura img');
+
+  if (!img.complete || !img.naturalWidth) {
+    alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
+    return;
+  }
+
+  html2canvas(document.getElementById('captura'), {
+    scale: 2,
+    logging: false,
+    useCORS: true,
+    allowTaint: false,
+    scrollY: -window.scrollY,
+    scrollX: -window.scrollX
+  }).then(canvas => {
+    try {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL(`image/${formato}`);
+      link.download = `comprobante.${formato}`;
+
+      if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+        window.open(link.href, '_blank');
+      } else {
+        link.click();
+      }
+    } catch (error) {
+      console.error("Error al descargar el comprobante:", error);
+      alert("Ocurrió un error al generar el comprobante. Inténtalo nuevamente.");
+    }
   });
 }
-
-// Pantalla completa
-document.getElementById('fullscreen-btn').addEventListener('click', () => {
-  const elem = document.getElementById('captura');
-  const escala = Math.min(window.innerWidth / 390, 1);
-
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  }
-
-  // Ajustar escala dinámica
-  elem.style.transform = `scale(${1 / escala})`;
-
-  document.getElementById('fullscreen-btn').style.display = 'none';
-  document.getElementById('exit-fullscreen-btn').style.display = 'block';
-});
-
-document.getElementById('exit-fullscreen-btn').addEventListener('click', () => {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-
-  // Restaurar escala original
-  document.getElementById('captura').style.transform = 'scale(1)';
-
-  document.getElementById('fullscreen-btn').style.display = 'block';
-  document.getElementById('exit-fullscreen-btn').style.display = 'none';
-});
-
-document.addEventListener("fullscreenchange", () => {
-  const isFull = document.fullscreenElement != null;
-  document.getElementById('fullscreen-btn').style.display = isFull ? 'none' : 'block';
-  document.getElementById('exit-fullscreen-btn').style.display = isFull ? 'block' : 'none';
-});
-
-function validarEntradas() {
-  const nombre = document.getElementById('input-nombre').value.trim();
-  const valor = document.getElementById('input-valor').value.trim();
-  const nequi = document.getElementById('input-nequi').value.trim();
-
-  if (!nombre || !valor || !nequi) {
-    alert("Todos los campos son obligatorios.");
-    return false;
-  }
-  if (isNaN(valor.replace(/\D/g, ''))) {
-    alert("El valor debe ser un número válido.");
-    return false;
-  }
-  if (nequi.length < 10) {
-    alert("El número Nequi debe tener al menos 10 dígitos.");
-    return false;
-  }
-  return true;
-}
 </script>
-
 </body>
 </html>
