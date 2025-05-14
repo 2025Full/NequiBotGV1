@@ -99,13 +99,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    /* Posiciones fijas sobre imagen de 390px de ancho */
-    #nombre { top: 376.22px; left: 202.22px; width: 160px; }
-    #valor { top: 412.26px; left: 202.22px; width: 160px; }
-    #nequi { top: 449.48px; left: 202.22px; width: 160px; }
-    #fecha { top: 490.02px; left: 202.22px; width: 160px; line-height: 1.3; }
-    #referencia { top: 540.26px; left: 202.22px; width: 160px; }
-    #disponible { top: 578.16px; left: 202.22px; width: 160px; }
+    /* Posiciones relativas sobre imagen de 390px de ancho */
+    #nombre { top: calc(376.22px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
+    #valor { top: calc(412.26px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
+    #nequi { top: calc(449.48px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
+    #fecha { top: calc(490.02px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); line-height: 1.3; }
+    #referencia { top: calc(540.26px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
+    #disponible { top: calc(578.16px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
     /* Botón de pantalla completa */
     #verPantallaCompleta {
       display: none;
