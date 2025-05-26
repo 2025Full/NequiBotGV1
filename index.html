@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>NequiBotGV - Generador</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -92,23 +92,37 @@
       color: #2E1A47;
       font-weight: 400;
       text-align: left;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Poppins', sans-serif;
       outline: none;
       pointer-events: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    /* Posiciones relativas sobre imagen de 390px de ancho */
-    #nombre { 
-      top: calc(412.26px * var(--escala)); 
-      left: calc((17px + 20px) * var(--escala)); 
-      width: calc(160px * var(--escala)); 
+    /* Coordenadas precisas para los campos */
+    #nombre {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      top: calc(216.8px - 37.8px + 19px + 11.34px + 3px + 12px); /* Bajado 7px adicionales (5px + 7px) */
+      left: calc(20px + 0.7cm - 2mm + 8px + 4px - 2px + 10px); /* Movido 5px a la izquierda (15px - 5px) */
+      width: 48%;
+      color: #3B003B;
+      text-transform: uppercase;
     }
-    #valor { 
-      top: calc((449.48px + 12px) * var(--escala)); 
-      left: calc((17px + 20px) * var(--escala)); 
-      width: calc(160px * var(--escala)); 
+    #valor {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      top: calc(232.3px - 37.8px + 19px + 15.12px + 3px + 3.78px);
+      right: 28px;
+      width: 32%;
+      text-align: right;
+      color: #a51c30;
+      pointer-events: none;
+    }
+    .decimales-pequenos {
+      font-size: 10px;
     }
     /* Botón de pantalla completa */
     #verPantallaCompleta {
@@ -152,7 +166,7 @@
 <div class="container" id="captura">
   <img src="1.jpg" alt="Fondo" id="imagen-fondo">
   <input type="text" id="nombre" class="input-overlay" readonly>
-  <input type="text" id="valor" class="input-overlay" readonly>
+  <div id="valor" class="input-overlay"></div>
 </div>
 <button id="verPantallaCompleta">Ver en Pantalla Completa</button>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js "></script>
@@ -216,8 +230,10 @@ document.getElementById('generar').addEventListener('click', () => {
   container.style.display = 'block';
 
   // Asignar valores a los campos superpuestos
-  document.getElementById('nombre').value = document.getElementById('input-nombre').value;
-  document.getElementById('valor').value = formatValor(document.getElementById('input-valor').value);
+  document.getElementById('nombre').value = document.getElementById('input-nombre').value.toUpperCase();
+  const valorInput = document.getElementById('input-valor').value.replace(/[^\d]/g, "");
+  const entero = parseInt(valorInput).toLocaleString("es-CO");
+  document.getElementById('valor').innerHTML = `-$${entero},<span class="decimales-pequenos">00</span>`;
 
   const formato = document.getElementById('formato').value;
 
@@ -274,17 +290,14 @@ document.addEventListener('fullscreenchange', () => {
 function validarEntradas() {
   const nombre = document.getElementById('input-nombre').value.trim();
   const valor = document.getElementById('input-valor').value.trim();
-
   if (!nombre || !valor) {
     alert("Todos los campos son obligatorios.");
     return false;
   }
-
   if (isNaN(valor.replace(/\D/g, ''))) {
     alert("El valor debe ser un número válido.");
     return false;
   }
-
   return true;
 }
 
@@ -300,7 +313,6 @@ function descargarComprobante(formato) {
     alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
     return;
   }
-
   html2canvas(document.getElementById('captura'), {
     scale: 2,
     logging: false,
