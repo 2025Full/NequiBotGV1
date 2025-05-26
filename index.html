@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,7 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       padding: 0;
@@ -72,6 +75,7 @@
       max-width: 390px;
       margin: 20px auto;
       background: #fff;
+      border-radius: 0px;
       overflow: hidden;
       display: none;
       transform-origin: top left;
@@ -90,12 +94,12 @@
       font-weight: 400;
       text-align: left;
       font-family: 'Poppins', sans-serif;
-      outline: none;
       pointer-events: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    /* Coordenadas precisas para los campos */
     #nombre {
       font-family: 'Poppins', sans-serif;
       font-weight: 400;
@@ -115,9 +119,10 @@
       width: 32%;
       text-align: right;
       color: #a51c30;
-      pointer-events: none;
     }
-    .decimales-pequenos { font-size: 10px; }
+    .decimales-pequenos {
+      font-size: 10px;
+    }
     #verPantallaCompleta {
       display: none;
       position: fixed;
@@ -158,158 +163,164 @@
   </style>
 </head>
 <body>
-  <div class="formulario" id="pantalla">
-    <div class="titulo">NequiBotGV</div>
-    <button id="whatsapp" class="boton boton-whatsapp">¿No tienes clave? Contáctanos</button>
-    <button id="clave-ingreso" class="boton boton-clave">Ingresar Clave</button>
-    <button id="cambiar-clave-boton" class="boton boton-cambiar">Cambiar Clave</button>
-    <div id="contenido-oculto" style="display: none;">
-      <input type="text" id="input-nombre" class="input-campo" placeholder="Nombre completo">
-      <input type="text" id="input-valor" class="input-campo" placeholder="-$0,00">
-      <button id="generar" class="boton boton-descargar">Generar Comprobante</button>
-      <div id="admin-panel" style="display: none;">
-        <input type="text" id="nueva-clave" class="input-campo" placeholder="Nueva clave de acceso">
-        <button id="guardar-nueva-clave" class="boton">Guardar Nueva Clave</button>
-      </div>
+<div class="formulario" id="pantalla">
+  <div class="titulo">NequiBotGV</div>
+  <button id="whatsapp" class="boton boton-whatsapp">¿No tienes clave? Contáctanos</button>
+  <button id="clave-ingreso" class="boton boton-clave">Ingresar Clave</button>
+  <button id="cambiar-clave-boton" class="boton boton-cambiar">Cambiar Clave</button>
+  <div id="contenido-oculto" style="display: none;">
+    <input type="text" id="input-nombre" class="input-campo" placeholder="Nombre completo">
+    <input type="text" id="input-valor" class="input-campo" placeholder="-$0,00">
+    <button id="generar" class="boton boton-descargar">Generar Comprobante</button>
+    <div id="admin-panel" style="display: none;">
+      <input type="text" id="nueva-clave" class="input-campo" placeholder="Nueva clave de acceso">
+      <button id="guardar-nueva-clave" class="boton">Guardar Nueva Clave</button>
     </div>
   </div>
+</div>
 
-  <div class="container" id="captura">
-    <img src="1.jpg" alt="Fondo" id="imagen-fondo">
-    <input type="text" id="nombre" class="input-overlay" readonly>
-    <div id="valor" class="input-overlay"></div>
-  </div>
+<!-- Contenedor de comprobante -->
+<div class="container" id="captura">
+  <img src="1.jpg" alt="Fondo" id="imagen-fondo">
+  <div id="nombre" class="input-overlay"></div>
+  <div id="valor" class="input-overlay"></div>
+</div>
 
-  <button id="verPantallaCompleta">Ver en Pantalla Completa</button>
+<button id="verPantallaCompleta">Ver en Pantalla Completa</button>
 
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <script>
-    let claveAcceso = "2025142205";
-    const claveAdmin = "1395";
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+let claveAcceso = "2025142205";
+const claveAdmin = "1395";
 
-    document.getElementById('whatsapp').onclick = () => {
-      window.open('https://wa.me/573178793834?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20la%20clave%20de%20NequiBotGV.', '_blank');
-    };
+document.getElementById('whatsapp').addEventListener('click', () => {
+  window.open('https://wa.me/573178793834?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20la%20clave%20de%20NequiBotGV.', '_blank');
+});
 
-    document.getElementById('clave-ingreso').onclick = () => {
-      const clave = prompt("Ingrese la clave de acceso:");
-      if (clave === claveAdmin) {
-        document.getElementById('admin-panel').style.display = 'block';
-        mostrarFormulario();
-      } else if (clave === claveAcceso) {
-        mostrarFormulario();
+document.getElementById('clave-ingreso').addEventListener('click', () => {
+  const clave = prompt("Ingrese la clave de acceso:");
+  if (clave === claveAdmin) {
+    document.getElementById('admin-panel').style.display = 'block';
+    mostrarFormulario();
+  } else if (clave === claveAcceso) {
+    mostrarFormulario();
+  } else {
+    alert("Clave incorrecta. Acceso denegado.");
+  }
+});
+
+document.getElementById('cambiar-clave-boton').addEventListener('click', () => {
+  const clave = prompt("Ingrese la clave de administrador:");
+  if (clave === claveAdmin) {
+    document.getElementById('admin-panel').style.display = 'block';
+    mostrarFormulario();
+  } else {
+    alert("Clave de administrador incorrecta.");
+  }
+});
+
+function mostrarFormulario() {
+  document.getElementById('contenido-oculto').style.display = 'block';
+  document.getElementById('whatsapp').style.display = 'none';
+  document.getElementById('clave-ingreso').style.display = 'none';
+  document.getElementById('cambiar-clave-boton').style.display = 'none';
+}
+
+document.getElementById('guardar-nueva-clave').addEventListener('click', () => {
+  const nueva = document.getElementById('nueva-clave').value.trim();
+  if (nueva) {
+    claveAcceso = nueva;
+    alert("Clave de acceso actualizada exitosamente.");
+    document.getElementById('nueva-clave').value = "";
+  }
+});
+
+document.getElementById('generar').addEventListener('click', () => {
+  if (!validarEntradas()) return;
+  const container = document.getElementById('captura');
+  const img = document.querySelector('#captura img');
+  const escala = Math.min(window.innerWidth / 390, 1);
+  container.style.setProperty('--escala', escala);
+  document.getElementById('pantalla').style.display = 'none';
+  container.style.display = 'block';
+
+  // Asignar valores
+  document.getElementById('nombre').innerText = document.getElementById('input-nombre').value.toUpperCase();
+  const valorInput = document.getElementById('input-valor').value.replace(/[^\d]/g, "");
+  const entero = parseInt(valorInput).toLocaleString("es-CO");
+  document.getElementById('valor').innerHTML = `-$${entero},<span class="decimales-pequenos">00</span>`;
+
+  if (!img.complete || !img.naturalWidth) {
+    alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
+    return;
+  }
+
+  document.getElementById('verPantallaCompleta').style.display = 'block';
+  descargarComprobante();
+});
+
+document.getElementById('verPantallaCompleta').addEventListener('click', () => {
+  const contenedor = document.getElementById('captura');
+  const btn = document.getElementById('verPantallaCompleta');
+  if (!document.fullscreenElement) {
+    contenedor.requestFullscreen?.() || contenedor.webkitRequestFullscreen?.() || contenedor.msRequestFullscreen?.();
+    contenedor.classList.add("fullscreen");
+    btn.textContent = "Salir de Pantalla Completa";
+  } else {
+    document.exitFullscreen?.() || document.webkitExitFullscreen?.() || document.msExitFullscreen?.();
+    contenedor.classList.remove("fullscreen");
+    btn.textContent = "Ver en Pantalla Completa";
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  const contenedor = document.getElementById('captura');
+  const btn = document.getElementById('verPantallaCompleta');
+  if (!document.fullscreenElement) {
+    contenedor.classList.remove("fullscreen");
+    btn.textContent = "Ver en Pantalla Completa";
+  }
+});
+
+function validarEntradas() {
+  const nombre = document.getElementById('input-nombre').value.trim();
+  const valor = document.getElementById('input-valor').value.trim();
+  if (!nombre || !valor) {
+    alert("Todos los campos son obligatorios.");
+    return false;
+  }
+  return true;
+}
+
+function descargarComprobante() {
+  const img = document.querySelector('#captura img');
+  if (!img.complete || !img.naturalWidth) {
+    alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
+    return;
+  }
+  html2canvas(document.getElementById('captura'), {
+    scale: 2,
+    logging: false,
+    useCORS: true,
+    allowTaint: false,
+    scrollY: -window.scrollY,
+    scrollX: -window.scrollX
+  }).then(canvas => {
+    try {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL(`image/png`);
+      link.download = `comprobante.png`;
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.open(link.href, '_blank');
       } else {
-        alert("Clave incorrecta. Acceso denegado.");
+        link.click();
       }
-    };
-
-    document.getElementById('cambiar-clave-boton').onclick = () => {
-      const clave = prompt("Ingrese la clave de administrador:");
-      if (clave === claveAdmin) {
-        document.getElementById('admin-panel').style.display = 'block';
-        mostrarFormulario();
-      } else {
-        alert("Clave de administrador incorrecta.");
-      }
-    };
-
-    document.getElementById('guardar-nueva-clave').onclick = () => {
-      const nueva = document.getElementById('nueva-clave').value.trim();
-      if (nueva) {
-        claveAcceso = nueva;
-        alert("Clave de acceso actualizada exitosamente.");
-        document.getElementById('nueva-clave').value = "";
-      }
-    };
-
-    function mostrarFormulario() {
-      document.getElementById('contenido-oculto').style.display = 'block';
-      document.getElementById('whatsapp').style.display = 'none';
-      document.getElementById('clave-ingreso').style.display = 'none';
-      document.getElementById('cambiar-clave-boton').style.display = 'none';
+    } catch (error) {
+      console.error("Error al descargar el comprobante:", error);
+      alert("Ocurrió un error al generar el comprobante. Inténtalo nuevamente.");
     }
-
-    document.getElementById('generar').onclick = () => {
-      if (!validarEntradas()) return;
-
-      const container = document.getElementById('captura');
-      container.style.display = 'block';
-      document.getElementById('pantalla').style.display = 'none';
-
-      document.getElementById('nombre').value = document.getElementById('input-nombre').value.toUpperCase();
-
-      const valorInput = document.getElementById('input-valor').value.replace(/[^\d]/g, "");
-      const entero = parseInt(valorInput).toLocaleString("es-CO");
-      document.getElementById('valor').innerHTML = `-$${entero},<span class="decimales-pequenos">00</span>`;
-
-      const img = document.querySelector('#captura img');
-      if (!img.complete || !img.naturalWidth) {
-        alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
-        return;
-      }
-
-      document.getElementById('verPantallaCompleta').style.display = 'block';
-
-      descargarComprobante();
-    };
-
-    document.getElementById('verPantallaCompleta').onclick = () => {
-      const contenedor = document.getElementById('captura');
-      const btn = document.getElementById('verPantallaCompleta');
-      if (!document.fullscreenElement) {
-        contenedor.requestFullscreen?.() || contenedor.webkitRequestFullscreen?.() || contenedor.msRequestFullscreen?.();
-        contenedor.classList.add("fullscreen");
-        btn.textContent = "Salir de Pantalla Completa";
-      } else {
-        document.exitFullscreen?.() || document.webkitExitFullscreen?.() || document.msExitFullscreen?.();
-        contenedor.classList.remove("fullscreen");
-        btn.textContent = "Ver en Pantalla Completa";
-      }
-    };
-
-    document.addEventListener('fullscreenchange', () => {
-      const btn = document.getElementById('verPantallaCompleta');
-      const contenedor = document.getElementById('captura');
-      if (!document.fullscreenElement) {
-        contenedor.classList.remove("fullscreen");
-        btn.textContent = "Ver en Pantalla Completa";
-      }
-    });
-
-    function validarEntradas() {
-      const nombre = document.getElementById('input-nombre').value.trim();
-      const valor = document.getElementById('input-valor').value.trim();
-      if (!nombre || !valor) {
-        alert("Todos los campos son obligatorios.");
-        return false;
-      }
-      return true;
-    }
-
-    function descargarComprobante() {
-      html2canvas(document.getElementById('captura'), {
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        allowTaint: false,
-        scrollY: -window.scrollY,
-        scrollX: -window.scrollX
-      }).then(canvas => {
-        try {
-          const link = document.createElement('a');
-          link.href = canvas.toDataURL("image/png");
-          link.download = "comprobante.png";
-          if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            window.open(link.href, '_blank');
-          } else {
-            link.click();
-          }
-        } catch (e) {
-          console.error("Error al descargar:", e);
-          alert("Ocurrió un error al generar el comprobante. Inténtalo nuevamente.");
-        }
-      });
-    }
-  </script>
+  });
+}
+</script>
 </body>
 </html>
