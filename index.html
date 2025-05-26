@@ -91,7 +91,7 @@
       font-size: 16px;
       color: #2E1A47;
       font-weight: 400;
-      text-align: right;
+      text-align: left; /* Alineado a la izquierda */
       font-family: 'Inter', sans-serif;
       outline: none;
       pointer-events: none;
@@ -100,12 +100,34 @@
       text-overflow: ellipsis;
     }
     /* Posiciones relativas sobre imagen de 390px de ancho */
-    #nombre { top: calc(376.22px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
-    #valor { top: calc(412.26px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
-    #nequi { top: calc(449.48px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
-    #fecha { top: calc(490.02px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); line-height: 1.3; }
-    #referencia { top: calc(540.26px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
-    #disponible { top: calc(578.16px * var(--escala)); left: calc(202.22px * var(--escala)); width: calc(160px * var(--escala)); }
+    #nombre { 
+      top: calc(412.26px * var(--escala)); 
+      left: calc((17px + 20px) * var(--escala)); 
+      width: calc(160px * var(--escala)); 
+    }
+    #valor { 
+      top: calc((449.48px + 12px) * var(--escala)); /* Bajado 12 píxeles en total */
+      left: calc((17px + 20px) * var(--escala)); 
+      width: calc(160px * var(--escala)); 
+    }
+    #nequi { 
+      top: calc((449.48px + 57px) * var(--escala)); /* Bajado 57 píxeles en total */
+      left: calc((17px + 20px) * var(--escala)); 
+      width: calc(160px * var(--escala)); 
+    }
+    #fecha { 
+      top: calc((540.26px + 15px) * var(--escala)); 
+      left: calc((17px + 20px) * var(--escala)); 
+      width: calc(280px * var(--escala)); 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+    }
+    #referencia { 
+      top: calc((540.26px + 58px + 2px) * var(--escala)); /* Bajado 2 píxeles adicionales */
+      left: calc((17px + 20px) * var(--escala)); 
+      width: calc(160px * var(--escala)); 
+    }
     /* Botón de pantalla completa */
     #verPantallaCompleta {
       display: none;
@@ -128,7 +150,7 @@
 <body>
 <div class="formulario" id="pantalla">
   <div class="titulo">NequiBotGV</div>
-  <button id="telegram" class="boton boton-whatsapp">¿No tienes clave? Contáctanos</button>
+  <button id="whatsapp" class="boton boton-whatsapp">¿No tienes clave? Contáctanos</button>
   <button id="clave-ingreso" class="boton boton-clave">Ingresar Clave</button>
   <button id="cambiar-clave-boton" class="boton boton-cambiar">Cambiar Clave</button>
   <div id="contenido-oculto" style="display: none;">
@@ -147,13 +169,12 @@
   </div>
 </div>
 <div class="container" id="captura">
-  <img src="comprobante_base.png" alt="Fondo" id="imagen-fondo">
+  <img src="1.jpg" alt="Fondo" id="imagen-fondo">
   <input type="text" id="nombre" class="input-overlay" readonly>
   <input type="text" id="valor" class="input-overlay" readonly>
   <input type="text" id="nequi" class="input-overlay" readonly>
   <div id="fecha" class="input-overlay"></div>
   <input type="text" id="referencia" class="input-overlay" readonly>
-  <div id="disponible" class="input-overlay">Disponible</div>
 </div>
 <button id="verPantallaCompleta">Ver en Pantalla Completa</button>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js  "></script>
@@ -161,8 +182,8 @@
 let claveAcceso = "2025142205";
 const claveAdmin = "1395";
 // Eventos principales
-document.getElementById('telegram').addEventListener('click', () => {
-  window.open('https://t.me/nequibotgv ', '_blank');
+document.getElementById('whatsapp').addEventListener('click', () => {
+  window.open('https://wa.me/573178793834?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20la%20clave%20de%20NequiBotGV.  ', '_blank');
 });
 document.getElementById('clave-ingreso').addEventListener('click', () => {
   const clave = prompt("Ingrese la clave de acceso:");
@@ -186,7 +207,7 @@ document.getElementById('cambiar-clave-boton').addEventListener('click', () => {
 });
 function mostrarFormulario() {
   document.getElementById('contenido-oculto').style.display = 'block';
-  document.getElementById('telegram').style.display = 'none';
+  document.getElementById('whatsapp').style.display = 'none';
   document.getElementById('clave-ingreso').style.display = 'none';
   document.getElementById('cambiar-clave-boton').style.display = 'none';
 }
@@ -284,7 +305,7 @@ function generarFecha() {
   let h = fecha.getHours(), m = fecha.getMinutes().toString().padStart(2, '0'),
       ampm = h >= 12 ? 'p. m.' : 'a. m.';
   h = h % 12 || 12;
-  document.getElementById('fecha').innerHTML = `${f}<br>a las ${h}:${m} ${ampm}`;
+  document.getElementById('fecha').innerHTML = `${f} a las ${h}:${m} ${ampm}`;
 }
 function generarReferencia() {
   document.getElementById('referencia').value = 'M' + Math.floor(1e7 + Math.random() * 9e7);
