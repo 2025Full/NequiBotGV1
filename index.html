@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>NequiBotGV - Generador</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -99,14 +99,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    /* Coordenadas precisas para los campos */
     #nombre {
       font-family: 'Poppins', sans-serif;
       font-weight: 400;
       font-size: 12px;
-      top: calc(216.8px - 37.8px + 19px + 11.34px + 3px + 12px); /* Bajado 7px adicionales (5px + 7px) */
-      left: calc(20px + 0.7cm - 2mm + 8px + 4px - 2px + 10px); /* Movido 5px a la izquierda (15px - 5px) */
-      width: 48%;
+      top: 258px;
+      left: 118px;
+      width: 180px;
       color: #3B003B;
       text-transform: uppercase;
     }
@@ -114,9 +113,9 @@
       font-family: 'Poppins', sans-serif;
       font-weight: 600;
       font-size: 13px;
-      top: calc(232.3px - 37.8px + 19px + 15.12px + 3px + 3.78px);
+      top: 285px;
       right: 28px;
-      width: 32%;
+      width: 130px;
       text-align: right;
       color: #a51c30;
       pointer-events: none;
@@ -124,7 +123,6 @@
     .decimales-pequenos {
       font-size: 10px;
     }
-    /* Botón de pantalla completa */
     #verPantallaCompleta {
       display: none;
       position: fixed;
@@ -141,7 +139,6 @@
       font-weight: bold;
       z-index: 9999;
     }
-    /* Ajustes cuando está en pantalla completa */
     .fullscreen {
       position: fixed;
       top: 0;
@@ -176,12 +173,8 @@
   <button id="clave-ingreso" class="boton boton-clave">Ingresar Clave</button>
   <button id="cambiar-clave-boton" class="boton boton-cambiar">Cambiar Clave</button>
   <div id="contenido-oculto" style="display: none;">
-    <input type="text" id="input-nombre" class="input-campo" placeholder="Nombre del destinatario">
-    <input type="text" id="input-valor" class="input-campo" placeholder="Valor en $">
-    <select id="formato" class="input-campo">
-      <option value="png">Formato: PNG</option>
-      <option value="jpg">Formato: JPG</option>
-    </select>
+    <input type="text" id="input-nombre" class="input-campo" placeholder="Nombre completo">
+    <input type="text" id="input-valor" class="input-campo" placeholder="-$0,00">
     <button id="generar" class="boton boton-descargar">Generar Comprobante</button>
     <div id="admin-panel" style="display: none;">
       <input type="text" id="nueva-clave" class="input-campo" placeholder="Nueva clave de acceso">
@@ -195,14 +188,13 @@
   <div id="valor" class="input-overlay"></div>
 </div>
 <button id="verPantallaCompleta">Ver en Pantalla Completa</button>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js "></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
 let claveAcceso = "2025142205";
 const claveAdmin = "1395";
 
-// Eventos principales
 document.getElementById('whatsapp').addEventListener('click', () => {
-  window.open('https://wa.me/573178793834?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20la%20clave%20de%20NequiBotGV. ', '_blank');
+  window.open('https://wa.me/573178793834?text=Hola%2C%20me%20gustar%C3%ADa%20obtener%20la%20clave%20de%20NequiBotGV.', '_blank');
 });
 
 document.getElementById('clave-ingreso').addEventListener('click', () => {
@@ -247,57 +239,35 @@ document.getElementById('generar').addEventListener('click', () => {
   if (!validarEntradas()) return;
   const container = document.getElementById('captura');
   const img = document.querySelector('#captura img');
-
-  // Ajustar escala según el tamaño de la pantalla
   const escala = Math.min(window.innerWidth / 390, 1);
   container.style.setProperty('--escala', escala);
-
   document.getElementById('pantalla').style.display = 'none';
   container.style.display = 'block';
 
-  // Asignar valores a los campos superpuestos
   document.getElementById('nombre').value = document.getElementById('input-nombre').value.toUpperCase();
   const valorInput = document.getElementById('input-valor').value.replace(/[^\d]/g, "");
   const entero = parseInt(valorInput).toLocaleString("es-CO");
   document.getElementById('valor').innerHTML = `-$${entero},<span class="decimales-pequenos">00</span>`;
 
-  const formato = document.getElementById('formato').value;
-
-  // Verificar si la imagen de fondo está completamente cargada
   if (!img.complete || !img.naturalWidth) {
     alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
     return;
   }
 
-  // Mostrar el botón de pantalla completa
   document.getElementById('verPantallaCompleta').style.display = 'block';
-
-  // Descargar automáticamente el comprobante
-  descargarComprobante(formato);
+  descargarComprobante();
 });
 
 document.getElementById('verPantallaCompleta').addEventListener('click', () => {
   const contenedor = document.getElementById('captura');
   const btn = document.getElementById('verPantallaCompleta');
   if (!document.fullscreenElement) {
-    if (contenedor.requestFullscreen) {
-      contenedor.requestFullscreen();
-    } else if (contenedor.webkitRequestFullscreen) {
-      contenedor.webkitRequestFullscreen();
-    } else if (contenedor.msRequestFullscreen) {
-      contenedor.msRequestFullscreen();
-    }
-    contenedor.classList.add("fullscreen"); // Agregar clase para ajustar estilos
+    contenedor.requestFullscreen?.();
+    contenedor.classList.add("fullscreen");
     btn.textContent = "Salir de Pantalla Completa";
   } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-    contenedor.classList.remove("fullscreen"); // Remover clase al salir de pantalla completa
+    document.exitFullscreen?.();
+    contenedor.classList.remove("fullscreen");
     btn.textContent = "Ver en Pantalla Completa";
   }
 });
@@ -311,7 +281,6 @@ document.addEventListener('fullscreenchange', () => {
   }
 });
 
-// Validaciones y utilidades
 function validarEntradas() {
   const nombre = document.getElementById('input-nombre').value.trim();
   const valor = document.getElementById('input-valor').value.trim();
@@ -322,7 +291,7 @@ function validarEntradas() {
   return true;
 }
 
-function descargarComprobante(formato) {
+function descargarComprobante() {
   const img = document.querySelector('#captura img');
   if (!img.complete || !img.naturalWidth) {
     alert("La imagen de fondo no se ha cargado completamente. Inténtalo nuevamente.");
@@ -338,8 +307,8 @@ function descargarComprobante(formato) {
   }).then(canvas => {
     try {
       const link = document.createElement('a');
-      link.href = canvas.toDataURL(`image/${formato}`);
-      link.download = `comprobante.${formato}`;
+      link.href = canvas.toDataURL(`image/png`);
+      link.download = `comprobante.png`;
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
         window.open(link.href, '_blank');
       } else {
