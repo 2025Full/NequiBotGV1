@@ -141,6 +141,32 @@
       font-weight: bold;
       z-index: 9999;
     }
+    /* Ajustes cuando está en pantalla completa */
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      z-index: 9999;
+    }
+    .fullscreen .container {
+      width: 100%;
+      max-width: 100%;
+      transform: scale(1);
+    }
+    .fullscreen .container img {
+      width: 100%;
+      height: auto;
+    }
+    .fullscreen #nombre,
+    .fullscreen #valor {
+      transform: scale(1);
+    }
   </style>
 </head>
 <body>
@@ -261,8 +287,7 @@ document.getElementById('verPantallaCompleta').addEventListener('click', () => {
     } else if (contenedor.msRequestFullscreen) {
       contenedor.msRequestFullscreen();
     }
-    const escala = Math.min(window.innerWidth / 390, 1);
-    contenedor.style.transform = `scale(${1 / escala})`;
+    contenedor.classList.add("fullscreen"); // Agregar clase para ajustar estilos
     btn.textContent = "Salir de Pantalla Completa";
   } else {
     if (document.exitFullscreen) {
@@ -272,7 +297,7 @@ document.getElementById('verPantallaCompleta').addEventListener('click', () => {
     } else if (document.msExitFullscreen) {
       document.msExitFullscreen();
     }
-    contenedor.style.transform = 'scale(1)';
+    contenedor.classList.remove("fullscreen"); // Remover clase al salir de pantalla completa
     btn.textContent = "Ver en Pantalla Completa";
   }
 });
@@ -281,7 +306,7 @@ document.addEventListener('fullscreenchange', () => {
   const contenedor = document.getElementById('captura');
   const btn = document.getElementById('verPantallaCompleta');
   if (!document.fullscreenElement) {
-    contenedor.style.transform = 'scale(1)';
+    contenedor.classList.remove("fullscreen");
     btn.textContent = "Ver en Pantalla Completa";
   }
 });
@@ -294,17 +319,7 @@ function validarEntradas() {
     alert("Todos los campos son obligatorios.");
     return false;
   }
-  if (isNaN(valor.replace(/\D/g, ''))) {
-    alert("El valor debe ser un número válido.");
-    return false;
-  }
   return true;
-}
-
-function formatValor(valor) {
-  valor = valor.replace(/\D/g, '');
-  if (!valor) return "$ 0,00";
-  return `$ ${valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},00`;
 }
 
 function descargarComprobante(formato) {
